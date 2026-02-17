@@ -1,0 +1,9 @@
+{
+  "name": "project",
+  "version": "0.0.1",
+  "description": "project",
+  "scripts": {},
+  "devDependencies": {
+    "@biomejs/biome": "2.4.0"
+  }
+}
