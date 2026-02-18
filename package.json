@@ -4,6 +4,9 @@
   "description": "project",
   "scripts": {},
   "devDependencies": {
-    "@biomejs/biome": "2.4.0"
+    "@biomejs/biome": "2.4.2"
+  },
+  "dependencies": {
+    "wanakana": "^5.3.1"
   }
 }

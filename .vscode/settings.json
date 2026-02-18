@@ -1,9 +1,11 @@
 // Place your settings in this file to overwrite default and user settings.
 {
   "biome.suggestInstallingGlobally": false,
-  "biome.lsp.bin": "../node_modules/@biomejs/biome/bin/biome",
+  "biome.lsp.bin": "node_modules/@biomejs/cli-darwin-x64/biome",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "explicit",
+    "source.action.useSortedProperties.biome": "explicit",
     "source.fixAll.biome": "explicit",
   },
   "editor.defaultFormatter": "biomejs.biome",
@@ -24,5 +26,5 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  },
+  }
 }
