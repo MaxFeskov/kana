@@ -8,7 +8,7 @@ import { Voice } from "./modules/vioce.js";
 
 (async () => {
   const answers = [];
-  let answerIndex = 0;
+  let answerIndex = -1;
   let voice;
 
   const startEl = document.getElementById("start");
@@ -23,8 +23,27 @@ import { Voice } from "./modules/vioce.js";
     answerEl?.setAttribute("disabled", "disabled");
   };
 
+  const getNextAnswer = () => {
+    const nextAnswer = answers[++answerIndex];
+
+    if (!nextAnswer) {
+      return;
+    }
+
+    const answerRaiting =
+      Number(globalThis.localStorage.getItem(nextAnswer)) || 0;
+
+    if (answerRaiting < 3) {
+      return nextAnswer;
+    }
+
+    return getNextAnswer();
+  };
+
   const restart = () => {
-    setElementText(symbolEl, answers[0]);
+    answerIndex = -1;
+    const nextAnswer = getNextAnswer();
+    setElementText(symbolEl, nextAnswer);
     setElementText(historyEl, "");
 
     if (answerEl) {
@@ -41,20 +60,33 @@ import { Voice } from "./modules/vioce.js";
     const correctAnswer = answers[answerIndex];
 
     if (answerIndex) {
-      appendElementText(historyEl, { text: ", " });
+      appendElementText(historyEl, { text: " " });
     }
 
-    appendElementText(historyEl, {
-      className: isCorrectAnswer(answer, correctAnswer)
-        ? "correct"
-        : "incorrect",
-      text: correctAnswer,
-    });
+    if (isCorrectAnswer(answer, correctAnswer)) {
+      appendElementText(historyEl, {
+        className: "correct",
+        text: correctAnswer,
+      });
+
+      const answerRaiting =
+        Number(globalThis.localStorage.getItem(correctAnswer)) || 0;
+      globalThis.localStorage.setItem(correctAnswer, answerRaiting + 1);
+    } else {
+      appendElementText(historyEl, {
+        className: "incorrect",
+        text: correctAnswer,
+      });
+
+      const answerRaiting =
+        Number(globalThis.localStorage.getItem(correctAnswer)) || 0;
+      globalThis.localStorage.setItem(correctAnswer, answerRaiting - 1);
+    }
 
     voice.speak(correctAnswer);
     formEl.reset();
 
-    const nextAnswer = answers[++answerIndex];
+    const nextAnswer = getNextAnswer();
 
     if (nextAnswer) {
       setElementText(symbolEl, nextAnswer);
